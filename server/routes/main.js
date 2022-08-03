@@ -1,4 +1,10 @@
+const express = require("express");
+const bodyParser = require('body-parser');
+const app = express();
+
 const pool = require('../data/config');
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = function (app) {
     app.get('/',(req,res) => {
@@ -11,4 +17,15 @@ module.exports = function (app) {
         });
     });
 
+    app.post("/addcategory", urlencodedParser, function(req, res) {
+        const pagetitle = req.body.pagetitle;
+        const description = req.body.pagetitle;
+        const alias = req.body.pagetitle;
+
+        pool.query('INSERT INTO modx_site_content SET pagetitle = ?,description = ?,alias = ?,parent = 2,class_key = "msCategory",published = 1,template = 1 ' ,[pagetitle,description,alias], (error, result) => {
+            console.log(pagetitle);
+        });
+
+    });
 }
+
